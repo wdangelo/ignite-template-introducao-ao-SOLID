@@ -1,0 +1,231 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Introduction to SOLID",
+        "description": "This is an API to introduction to SOLID",
+        "version": "1.0.0",
+        "contact": {
+            "email": "wdangelo1983@gmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create an user",
+                "description": "Create a new user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Users"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "name": "Joseph Stone",
+                                        "email": "joseph@joseph.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref": "#/components/schemas/Users"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Create fail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "example": {
+                                        "error": "Informed email is already in use."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users",
+                "description": "List all users",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "user_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "List all users fail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "example": {
+                                        "error": "User with this id not found or User must be admin to list all users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref": "#/components/schemas/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+                "description": "List specific user",
+                "summary": "List specific user in database",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User id for database query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "User with this id not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "example": {
+                                        "error": "User with this id not found."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref": "#/components/schemas/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userId}/admin": {
+            "patch": {
+                "description": "Turn admin",
+                "summary": "Turn admin user",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User id to be admin",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "User with this id not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "example": {
+                                        "error": "User with this id not found."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref": "#/components/schemas/Users"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Users": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "date"
+                    },
+                    "updated_at": {
+                        "type": "date"
+                    }
+                },
+                "example": {
+                    "admin": false,
+                    "id": "554053cb-d4ac-4c09-8560-2805417ebb44",
+                    "name": "Joseph Stone",
+                    "email": "joseph@joseph.com",
+                    "created_at": "2021-07-17T13:47:26.553Z",
+                    "updated_at": "2021-07-17T13:47:26.553Z"
+                }
+            }
+        }
+    }
+}
